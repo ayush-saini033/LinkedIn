@@ -10,7 +10,6 @@ interface User {
   username?: string;
 }
 
-
 const Sidebar = async ({ user }: { user: User }) => {
   const posts = await getAllPosts();
   return (
