@@ -14,13 +14,17 @@ import { deletePostAction } from "@/lib/serveraction";
 const Post = ({ post }: { post: IPostDocument }) => {
 
   const { user } = useUser();
-  const fullName = post?.user?.firstName + " " + post?.user?.lastName;
+  const fullName = `${post?.user?.firstName ?? "Unknown"} ${
+    post?.user?.lastName ?? ""
+  }`;
   const loggedInUser = user?.id === post?.user?.userId;
 
   return (
     <div className="bg-white my-2 mx-2 md:mx-0 rounded-lg border border-gray-300">
       <div className=" flex gap-2 p-4">
-        <ProfilePhoto src={post?.user?.profilePhoto!} />
+        <ProfilePhoto
+          src={post?.user?.profilePhoto || "/.jpg"}
+        />
         <div className="flex items-center justify-between w-full">
           <div>
             <h1 className="text-sm font-bold">
@@ -42,7 +46,7 @@ const Post = ({ post }: { post: IPostDocument }) => {
           {loggedInUser && (
             <Button
               onClick={() => {
-                const res = deletePostAction(post._id as string);
+                deletePostAction(post._id as string);
               }}
               size={"icon"}
               className="rounded-full"

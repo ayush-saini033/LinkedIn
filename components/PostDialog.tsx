@@ -9,7 +9,7 @@ import {
 import ProfilePhoto from "./shared/ProfilePhoto";
 import { Textarea } from "./ui/textarea";
 import { Images } from "lucide-react";
-import { useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import Image from "next/image";
 import React from "react";
 import { readFileAsDataUrl } from "@/lib/utils";
@@ -28,7 +28,7 @@ const PostDialog = ({
   const [selectedFile, setSelectedFile] = useState<string>("");
   const [inputText, setInputText] = useState<string>("");
 
-  const changeHandler = (e: any) => {
+  const changeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInputText(e.target.value);
   };
 
@@ -45,7 +45,7 @@ const PostDialog = ({
     try {
       await createPostAction(inputText, selectedFile);
     } catch (error) {
-      console.log("error occurred", error);
+      console.error("error occurred", error);
     }
     setInputText("");
     setSelectedFile("");

@@ -50,8 +50,11 @@ export const createPostAction = async (
       });
     }
     revalidatePath("/");
-  } catch (error: any) {
-    throw new Error(error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error("An unknown error occurred.");
   }
 };
 // get all post using server actions
@@ -60,11 +63,14 @@ export const getAllPosts = async () => {
     await connectDB();
     const posts = await Post.find()
       .sort({ createdAt: -1 })
-      .populate({ path: "comments", options: { sort: { createdAt: -1 } } })
+      .populate({ path: "comments", options: { sort: { createdAt: -1 } } });
     if (!posts) return [];
     return JSON.parse(JSON.stringify(posts));
-  } catch (error) {
-    console.log(error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error("An unknown error occurred.");
   }
 };
 
@@ -83,8 +89,11 @@ export const deletePostAction = async (postId: string) => {
   try {
     await Post.deleteOne({ _id: postId });
     revalidatePath("/");
-  } catch (error: any) {
-    throw new Error("An error occurred", error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error("An unknown error occurred.");
   }
 };
 
@@ -117,7 +126,10 @@ export const createCommentAction = async (
     await post.save();
 
     revalidatePath("/");
-  } catch (error) {
-    throw new Error("An error occurred");
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error("An unknown error occurred.");
   }
 };

@@ -3,8 +3,15 @@ import React from "react";
 import ProfilePhoto from "./shared/ProfilePhoto";
 import { getAllPosts } from "@/lib/serveraction";
 
-const Sidebar = async ({ user }: { user: any }) => {
-    
+interface User {
+  imageUrl?: string;
+  firstName?: string;
+  lastName?: string;
+  username?: string;
+}
+
+
+const Sidebar = async ({ user }: { user: User }) => {
   const posts = await getAllPosts();
   return (
     <div className="hidden md:block w-[20%] h-fit border bordergray-300 bg-white rounded-lg">
@@ -21,18 +28,14 @@ const Sidebar = async ({ user }: { user: any }) => {
           )}
         </div>
         <div className="my-1 absolute top-10 left-[40%]">
-          <ProfilePhoto src={user ? user?.imageUrl! : "/banner.jpg"} />
+          <ProfilePhoto src={user?.imageUrl || "/banner.jpg"} />
         </div>
         <div className="border-b border-b-gray-300">
           <div className="p-2 mt-5 text-center">
             <h1 className="font-bold hover:underline cursor-pointer">
-              {user
-                ? `${user?.firstName} ${user?.lastName}`
-                : "Patel Mern Stack"}
+              {user ? `${user?.firstName} ${user?.lastName}` : "Ayush saini"}
             </h1>
-            <p className="text-xs">
-              @{user ? `${user?.username}` : "username"}
-            </p>
+            <p className="text-xs">@{user?.username || "username"}</p>
           </div>
         </div>
       </div>
@@ -43,7 +46,7 @@ const Sidebar = async ({ user }: { user: any }) => {
         </div>
         <div className="w-full flex justify-between items-center px-3 py-2 hover:bg-gray-200 cursor-pointer">
           <p>Posts</p>
-          <p className="text-blue-500 font-bold">{posts.length}</p>
+          <p className="text-blue-500 font-bold">{posts?.length}</p>
         </div>
       </div>
     </div>

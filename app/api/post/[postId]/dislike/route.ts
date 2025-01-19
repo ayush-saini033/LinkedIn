@@ -14,7 +14,10 @@ export const POST = async (
     if (!post) return NextResponse.json({ error: "Post not found." });
     await post.updateOne({ $pull: { likes: userId } });
     return NextResponse.json({ message: "Post disliked successfully." });
-  } catch (error: any) {
-    return NextResponse.json({ error: "An error occurred." });
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message });
+    }
+    return NextResponse.json({ error: "An unexpected error occurred." });
   }
 };

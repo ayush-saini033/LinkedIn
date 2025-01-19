@@ -17,7 +17,10 @@ export const GET = async (
       options: { sort: { createdAt: -1 } },
     });
     return NextResponse.json(comments);
-  } catch (error: any) {
-    return NextResponse.json({ error: "an error occurred." });
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message });
+    }
+    return NextResponse.json({ error: "An unexpected error occurred." });
   }
 };
