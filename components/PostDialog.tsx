@@ -15,14 +15,17 @@ import React from "react";
 import { readFileAsDataUrl } from "@/lib/utils";
 import { createPostAction } from "@/lib/serveraction";
 
-const PostDialog = ({
+
+interface PostDialogProps {
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>; // Correct typing for setOpen
+  open: boolean;
+  src: string;
+}
+
+const PostDialog: React.FC<PostDialogProps> = ({
   setOpen,
   open,
   src,
-}: {
-  setOpen: any;
-  open: boolean;
-  src: string;
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<string>("");
